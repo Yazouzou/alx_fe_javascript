@@ -36,6 +36,7 @@ const formContainer = document.getElementById("formContainer");
 const importFileInput = document.getElementById("importFile");
 const exportBtn = document.getElementById("exportQuotes");
 const categoryFilter = document.getElementById("categoryFilter");
+const notificationDiv = document.getElementById("notification");
 
 // ----------------------------
 // Show random quote
@@ -137,7 +138,7 @@ function importFromJsonFile(event) {
     saveQuotes();
     populateCategories();
     filterQuotes();
-    alert("Quotes imported successfully!");
+    showServerNotification("Quotes imported successfully!");
   };
 
   fileReader.readAsText(event.target.files[0]);
@@ -183,6 +184,58 @@ function filterQuotes() {
 }
 
 categoryFilter.addEventListener("change", filterQuotes);
+
+// ----------------------------
+// Server Sync Simulation
+// ----------------------------
+const SERVER_URL = "https://jsonplaceholder.typicode.com/posts";
+
+// Notify user of updates
+function showServerNotification(message) {
+  notificationDiv.textContent = message;
+  setTimeout(() => {
+    notificationDiv.textContent = "";
+  }, 5000); // clear after 5 seconds
+}
+
+async function syncWithServer() {
+  try {
+    const response = await fetch(SERVER_URL);
+    const serverData = await response.json();
+
+    // Convert server posts to quote objects (use title as text, userId as category)
+    const serverQuotes = serverData.map(post => ({
+      text: post.title,
+      category: `User ${post.userId}`
+    }));
+
+    let conflictsResolved = false;
+
+    serverQuotes.forEach(sq => {
+      // Check if quote already exists locally by text
+      const exists = quotes.some(lq => lq.text === sq.text);
+      if (!exists) {
+        quotes.push(sq);
+        conflictsResolved = true;
+      }
+    });
+
+    if (conflictsResolved) {
+      saveQuotes();
+      populateCategories();
+      filterQuotes();
+      showServerNotification("New quotes synced from server!");
+    }
+
+  } catch (error) {
+    console.error("Error syncing with server:", error);
+  }
+}
+
+// Periodic sync every 30 seconds
+setInterval(syncWithServer, 30000);
+// Initial sync on page load
+syncWithServer();
 
 // ----------------------------
 // Event listeners

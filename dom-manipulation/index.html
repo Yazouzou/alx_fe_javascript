@@ -9,6 +9,9 @@
 
   <h1>Dynamic Quote Generator</h1>
 
+  <!-- Notification for server sync -->
+  <div id="notification" style="color: green; font-weight: bold; margin-bottom: 10px;"></div>
+
   <!-- Category filter -->
   <label for="categoryFilter">Filter by Category:</label>
   <select id="categoryFilter">
@@ -17,13 +20,13 @@
   </select>
 
   <!-- Quote display -->
-  <div id="quoteDisplay"></div>
+  <div id="quoteDisplay" style="margin: 10px 0;"></div>
 
   <!-- Show random quote button -->
   <button id="newQuote">Show New Quote</button>
 
   <!-- Container for dynamic add quote form -->
-  <div id="formContainer"></div>
+  <div id="formContainer" style="margin-top: 10px;"></div>
 
   <!-- JSON Import / Export -->
   <div style="margin-top: 10px;">
@@ -31,6 +34,7 @@
     <input type="file" id="importFile" accept=".json" />
   </div>
 
+  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>
