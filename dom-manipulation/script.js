@@ -8,43 +8,68 @@ const quotes = [
 // DOM elements
 const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteBtn = document.getElementById("newQuote");
-const addQuoteBtn = document.getElementById("addQuoteBtn");
+const formContainer = document.getElementById("formContainer");
 
 // Show random quote
 function showRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
 
-  quoteDisplay.innerHTML = `
-    <p>"${quote.text}"</p>
-    <small>Category: ${quote.category}</small>
-  `;
+  quoteDisplay.innerHTML = "";
+
+  const quoteText = document.createElement("p");
+  quoteText.textContent = `"${quote.text}"`;
+
+  const quoteCategory = document.createElement("small");
+  quoteCategory.textContent = `Category: ${quote.category}`;
+
+  quoteDisplay.appendChild(quoteText);
+  quoteDisplay.appendChild(quoteCategory);
 }
 
-// Add new quote
-function addQuote() {
-  const quoteText = document.getElementById("newQuoteText").value;
-  const quoteCategory = document.getElementById("newQuoteCategory").value;
+// Create Add Quote Form dynamically
+function createAddQuoteForm() {
+  const inputText = document.createElement("input");
+  inputText.type = "text";
+  inputText.placeholder = "Enter a new quote";
+  inputText.id = "newQuoteText";
 
-  if (quoteText === "" || quoteCategory === "") {
-    alert("Please fill in both fields.");
-    return;
-  }
+  const inputCategory = document.createElement("input");
+  inputCategory.type = "text";
+  inputCategory.placeholder = "Enter quote category";
+  inputCategory.id = "newQuoteCategory";
 
-  quotes.push({
-    text: quoteText,
-    category: quoteCategory
+  const addButton = document.createElement("button");
+  addButton.textContent = "Add Quote";
+
+  addButton.addEventListener("click", function () {
+    const quoteText = inputText.value.trim();
+    const quoteCategory = inputCategory.value.trim();
+
+    if (quoteText === "" || quoteCategory === "") {
+      alert("Please fill in both fields.");
+      return;
+    }
+
+    quotes.push({
+      text: quoteText,
+      category: quoteCategory
+    });
+
+    inputText.value = "";
+    inputCategory.value = "";
+
+    showRandomQuote();
   });
 
-  document.getElementById("newQuoteText").value = "";
-  document.getElementById("newQuoteCategory").value = "";
-
-  showRandomQuote();
+  formContainer.appendChild(inputText);
+  formContainer.appendChild(inputCategory);
+  formContainer.appendChild(addButton);
 }
 
-// Event listeners
+// Event listener
 newQuoteBtn.addEventListener("click", showRandomQuote);
-addQuoteBtn.addEventListener("click", addQuote);
 
-// Show a quote on page load
+// Initialize
+createAddQuoteForm();
 showRandomQuote();
