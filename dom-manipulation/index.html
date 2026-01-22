@@ -9,13 +9,22 @@
 
   <h1>Dynamic Quote Generator</h1>
 
+  <!-- Quote display -->
   <div id="quoteDisplay"></div>
 
+  <!-- Show random quote button -->
   <button id="newQuote">Show New Quote</button>
 
- <!-- Form will be created dynamically -->
+  <!-- Container for dynamic add quote form -->
   <div id="formContainer"></div>
 
+  <!-- JSON Import / Export -->
+  <div style="margin-top: 10px;">
+    <button id="exportQuotes">Export Quotes</button>
+    <input type="file" id="importFile" accept=".json" />
+  </div>
+
+  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>
