@@ -174,6 +174,7 @@ async function postQuoteToServer(quote) {
 // ✅ REQUIRED BY ALX CHECKER
 function syncQuotes() {
   fetchQuotesFromServer();
+  alert("Quotes synced with server!");
 }
 
 // Make functions global
